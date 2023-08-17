@@ -1,7 +1,5 @@
 package pro.sky.course3lesson5scratch.model;
 
-import org.springframework.beans.factory.annotation.Value;
-
 import javax.persistence.*;
 
 @Entity

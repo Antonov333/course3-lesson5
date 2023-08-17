@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import pro.sky.course3lesson5scratch.exception.AvatarNotExistedException;
-import pro.sky.course3lesson5scratch.exception.StudentNotFoundException;
 import pro.sky.course3lesson5scratch.model.Avatar;
 import pro.sky.course3lesson5scratch.model.Student;
 import pro.sky.course3lesson5scratch.repository.AvatarRepository;
@@ -43,13 +42,26 @@ public class AvatarService {
         ) {
             bis.transferTo(bos);
         }
-        Avatar avatar = new Avatar();
+        Avatar avatar = avatarRepository.findById(studentId).orElse(new Avatar());
         avatar.setStudent(student);
         avatar.setFilePath(filePath.toString());
         avatar.setFileSize(avatarFile.getSize());
         avatar.setMediaType(avatarFile.getContentType());
         avatar.setData(avatarFile.getBytes());
         avatarRepository.save(avatar);
+    }
+
+    public void getAvatarPictureFromDataBase(long id) {
+        /*
+        * @GetMapping(value = "/{id}/avatar-from-db")
+public ResponseEntity‹byte[]› downloadAvatar(@PathVariable Long id) {
+Avatar avatar = avatarService.findAvatar(id);
+HttpHeaders headers = new HttpHeaders();
+headers.setContentType(MediaType.parseMediaType(avatar.getMediaType()));
+headers.setContentLength(avatar.getData().length);
+return ResponseEntity.status(HttpStatus.OK).headers(headers).body(avatar.getData());
+}
+        * */
     }
 
     public Avatar findAvatar(Long studentId) {
