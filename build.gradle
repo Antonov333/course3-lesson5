@@ -21,7 +21,6 @@ dependencies {
     implementation 'org.springframework.webflow:org.springframework.webflow:2.0.5.RELEASE'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation 'org.springdoc:springdoc-openapi-ui:1.6.9'
-    implementation group: 'com.thedeanda', name: 'lorem', version: '2.1'
 
     // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-jpa
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
