@@ -7,9 +7,6 @@ import javax.persistence.*;
 @Entity
 public class Avatar {
 
-    @Value("${path.to.avatars.folder}")
-    private String avatarsDir;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,14 +20,6 @@ public class Avatar {
     private Student student;
 
     public Avatar() {
-    }
-
-    public String getAvatarsDir() {
-        return avatarsDir;
-    }
-
-    public void setAvatarsDir(String avatarsDir) {
-        this.avatarsDir = avatarsDir;
     }
 
     public Long getId() {
