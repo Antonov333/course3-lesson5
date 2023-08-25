@@ -20,24 +20,36 @@ public class StudentController {
     @GetMapping()
     public List<Student> viewStudents() {
         return students.getStudents();
-    }
+    } // covered by test
 
 
     @PostMapping()
-    public Student create(@RequestBody Student student) {
+    public Student create(@RequestBody Student student) { // covered by test
         Student createdStudent = students.createStudent(student);
         return createdStudent;
     }
 
+    @GetMapping("/{id}")
+    public Student getStudent(@PathVariable("id") long id) { // covered by test
+        return students.getStudentById(id);
+    }
+
+
     @PutMapping()
-    public Student putStudent(@RequestBody Student student) {
+    public Student putStudent(@RequestBody Student student) { // tested
         Student updatedStudent = students.updateStudent(student.getId(), student.getName(), student.getAge());
         return updatedStudent;
     }
 
     @DeleteMapping()
-    public Student expel(Student student) {
+    public Student expel(@RequestBody Student student) {
         Student expelledStudent = students.sendDown(student);
+        return expelledStudent;
+    }
+
+    @DeleteMapping("/{id}")
+    public Student expel(@PathVariable("id") long id) {
+        Student expelledStudent = students.sendDown(id);
         return expelledStudent;
     }
 

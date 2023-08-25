@@ -44,7 +44,17 @@ public class StudentService {
         return studentRepository.findAll();
     }
 
+    public Student getStudentById(long id) {
+        return studentRepository.findById(id).orElseThrow(StudentNotFoundException::new);
+    }
+
     public Student sendDown(Student student) {
+        studentRepository.delete(student);
+        return student;
+    }
+
+    public Student sendDown(long id) {
+        Student student = studentRepository.findById(id).orElseThrow(StudentNotFoundException::new);
         studentRepository.delete(student);
         return student;
     }
