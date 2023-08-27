@@ -30,6 +30,13 @@ public class Student {
         this.age = age;
     }
 
+    public Student(long id, String name, int age, Faculty faculty) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+        this.faculty = faculty;
+    }
+
     @Override
     public String toString() {
         return "Student{" +

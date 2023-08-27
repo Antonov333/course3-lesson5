@@ -6,14 +6,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.http.*;
+import org.springframework.web.bind.annotation.RequestBody;
 import pro.sky.course3lesson5scratch.controller.StudentController;
 import pro.sky.course3lesson5scratch.exception.StudentNotFoundException;
 import pro.sky.course3lesson5scratch.model.Faculty;
 import pro.sky.course3lesson5scratch.model.Student;
 
-import java.util.List;
+import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class StudentControllerTest {
@@ -27,43 +30,57 @@ public class StudentControllerTest {
 
     @Test
     void checkContextLoads() throws Exception {
-        Assertions.assertThat(studentController).isNotNull();
+        assertThat(studentController).isNotNull();
     }
 
     @Test
     void viewStudentsTest() {
-        Assertions.assertThat(
+        assertThat(
                         this.testRestTemplate.getForObject("http://localhost:" + port + "/student", Object.class))
                 .isNotNull();
     }
 
     @Test
     void createTest() {
-// Student name for testing: CollinKerr
 
-        Student collin = new Student();
-        collin.setName("CollinKerr");
-        collin.setAge(23);
-        collin.setFaculty(new Faculty(1, "Mountain Bike Racing", "green"));
+        Student student = new Student();
+        Faculty faculty = new Faculty(1, "Mountain Bike Racing", "green");
+        student.setName("Alvarado");
+        student.setAge(19);
+        student.setFaculty(faculty);
 
-        Assertions.assertThat(this.testRestTemplate.postForObject("http://localhost:" + port + "/student",
-                collin, Student.class)).isNotNull();
+        ResponseEntity<Student> studentResponse = createStudent(student, faculty);
 
+        assertThat(studentResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(studentResponse.getBody()).isNotNull();
+        assertThat(studentResponse.getBody().getName()).isEqualTo(student.getName());
+        assertThat(studentResponse.getBody().getAge()).isEqualTo(student.getAge());
+    }
 
+    private ResponseEntity<Student> createStudent(String name, int age, Faculty faculty) {
+        return testRestTemplate.postForEntity("/student",
+                new Student(0, name, age, faculty),
+                Student.class);
+    }
+
+    private ResponseEntity<Student> createStudent(Student student, Faculty faculty) {
+        Student s = student;
+        s.setFaculty(faculty);
+        return testRestTemplate.postForEntity("/student", s, Student.class);
     }
 
     @Test
     void getStudentByIdTest() {
-        Assertions.assertThat(
+        assertThat(
                         this.testRestTemplate.getForObject("http://localhost:" + port + "/student/2", Student.class))
                 .isNotNull();
 
         Student expectedStudent = new Student();
         expectedStudent.setId(2);
-        expectedStudent.setName("John");
-        expectedStudent.setAge(22);
+        expectedStudent.setName("Joan");
+        expectedStudent.setAge(32);
 
-        Assertions.assertThat(
+        assertThat(
                         this.testRestTemplate.getForObject("http://localhost:" + port + "/student/2", Student.class))
                 .isEqualTo(expectedStudent);
 
@@ -71,11 +88,27 @@ public class StudentControllerTest {
 
     @Test
     void putStudentTest() {
-        Student expectedStudent = new Student(2, "Joan", 32);
+        Student expectedStudent = new Student(2, "Joan", 23);
         this.testRestTemplate.put("http://localhost:" + port + "/student",
                 expectedStudent);
         assertEquals(expectedStudent, testRestTemplate.
                 getForObject("http://localhost:" + port + "/student/2", Student.class));
+    }
+
+    /*
+    @DeleteMapping("/{id}")
+    public Student expel(@PathVariable("id") long id) {
+        Student expelledStudent = students.sendDown(id);
+        return expelledStudent;
+    }
+
+     */
+
+    @Test
+    void expelByIdTest() {
+        Long id = 12L;
+        this.testRestTemplate.delete("http://localhost:" + port + "/student/" + id);
+        assertThrows(StudentNotFoundException.class, () -> this.studentController.getStudent(id));
     }
 
     @Test
@@ -83,16 +116,27 @@ public class StudentControllerTest {
 
         Student collinKerr = new Student(11, "CollinKerr", 23);
         collinKerr.setFaculty(new Faculty(1, "Mountain Bike Racing", "green"));
-        this.testRestTemplate.delete("http://localhost:" + port + "/student/", collinKerr);
-//       Assertions.assertThatThrownBy(() -> this.testRestTemplate.getForObject("http://localhost:" + port + "/student/" + collinKerr.getId(),
-//               StudentNotFoundException.class));
+        HttpEntity<Student> requestedStudent = new HttpEntity<>(collinKerr);
+        ResponseEntity<Student> actualStudent =
+                this.testRestTemplate.exchange("http://localhost:" + port + "/student/",
+                        HttpMethod.DELETE,
+                        requestedStudent,
+                        Student.class);
+        assertEquals(requestedStudent.getBody(), actualStudent.getBody());
+    }
 
+    @Test
+    void selectByAgeTest() {
+        int testAge = 23;
+        Student expectedStudent = this.testRestTemplate
+                .getForEntity("http://localhost:" + port + "/student/2", Student.class).getBody();
+        ResponseEntity<ArrayList> response = this.testRestTemplate.getForEntity(
+                "http://localhost:" + port + "/student/age/" + testAge, ArrayList.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotEquals(null, response.getBody());
+        assertThat(response.getBody().size()).isEqualTo(1);
+        System.out.println(response.getBody());
     }
-    /*
-    @DeleteMapping()
-    public Student expel(@RequestBody Student student) {
-        Student expelledStudent = students.sendDown(student);
-        return expelledStudent;
-    }
-    * */
+
+
 }

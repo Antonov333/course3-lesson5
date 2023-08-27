@@ -43,12 +43,14 @@ public class StudentController {
 
     @DeleteMapping()
     public Student expel(@RequestBody Student student) {
+        System.out.println("expel by student: " + student);
         Student expelledStudent = students.sendDown(student);
         return expelledStudent;
     }
 
     @DeleteMapping("/{id}")
     public Student expel(@PathVariable("id") long id) {
+        System.out.println("expel by id: " + id);
         Student expelledStudent = students.sendDown(id);
         return expelledStudent;
     }
