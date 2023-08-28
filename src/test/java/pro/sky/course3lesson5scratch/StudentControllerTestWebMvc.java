@@ -15,24 +15,10 @@ import pro.sky.course3lesson5scratch.service.AvatarService;
 import pro.sky.course3lesson5scratch.service.FacultyService;
 import pro.sky.course3lesson5scratch.service.StudentService;
 
-@WebMvcTest(controllers = StudentController.class)
+@WebMvcTest(StudentController.class)
 public class StudentControllerTestWebMvc {
 
-    /*
-    @Autowired
-  private MockMvc mockMvc;
-
-  @MockBean
-  private UserRepository userRepository;
-
-  @SpyBean
-  private UserService userService;
-
-  @InjectMocks
-  private UserController userController;
-}
-     */
-
+    
     @Autowired
     private MockMvc mockMvc;
 
