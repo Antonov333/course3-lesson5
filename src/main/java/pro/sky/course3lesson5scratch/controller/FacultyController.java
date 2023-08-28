@@ -60,11 +60,6 @@ public class FacultyController {
         return facultyService.findByNameOrColorCaseTolerant(search);
     }
 
-    @GetMapping(path = "/load")
-    public HashMap<Long, Faculty> load() {
-        return facultyService.loadExampleFaculties();
-    }
-
     @GetMapping(path = "/students/{facultyId}")
     public List<Student> getFacultyStudentList(@PathVariable("facultyId") long facultyId) {
         return facultyService.getStudentList(facultyId);

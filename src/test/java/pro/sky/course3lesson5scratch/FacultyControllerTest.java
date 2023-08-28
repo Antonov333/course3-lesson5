@@ -161,4 +161,40 @@ public class FacultyControllerTest {
 
     }
 
+    @Test
+    void findAllByNameIgnoreCaseTest() {
+
+        String searchPattern = "mountain BIKE Racing";
+
+        ResponseEntity<List> respondedFacultyEntity =
+                this.testRestTemplate.exchange(
+                        "http://localhost:" + port + "/faculty/nameOrColorIgnoreCase?search=" + searchPattern,
+                        HttpMethod.GET,
+                        null,
+                        List.class);
+
+        assertThat(respondedFacultyEntity.getBody()).isNotNull();
+
+        ArrayList<Object> list = (ArrayList<Object>) respondedFacultyEntity.getBody();
+        LinkedHashMap<String, Object> actualItem = (LinkedHashMap<String, Object>) list.get(0);
+        assertThat(actualItem.get("name")).isEqualTo("Mountain Bike Racing");
+
+    }
+
+    @Test
+    void getFacultyStudentListTest() {
+        String url = "http://localhost:" + port + "/faculty/students/5";
+        ResponseEntity<List> respondedFacultyListEntity =
+                this.testRestTemplate.exchange(
+                        url,
+                        HttpMethod.GET,
+                        null,
+                        List.class);
+        ArrayList<Object> respondedFacultyList = (ArrayList<Object>) respondedFacultyListEntity.getBody();
+        assertThat(respondedFacultyList.size()).isEqualTo(2);
+        LinkedHashMap<String, Object> respondedItem = (LinkedHashMap<String, Object>) respondedFacultyList.get(0);
+        LinkedHashMap<String, Object> facultyMap = (LinkedHashMap<String, Object>) respondedItem.get("faculty");
+        assertThat(facultyMap.get("name")).isEqualTo("Stunt And Trial Bicycling");
+    }
+
 }
