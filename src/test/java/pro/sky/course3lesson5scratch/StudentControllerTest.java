@@ -135,8 +135,24 @@ public class StudentControllerTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotEquals(null, response.getBody());
         assertThat(response.getBody().size()).isEqualTo(1);
-        System.out.println(response.getBody());
+        LinkedHashMap<String, Object> mapResponse = (LinkedHashMap) response.getBody().get(0);
+        String myKey = "age";
+        assertThat(mapResponse.containsValue(testAge)).isTrue();
+        assertThat(mapResponse.get(myKey)).isEqualTo(testAge);
     }
 
+    @Test
+    void selectByAgeBetweenTest() {
+        int min = 24, max = 24;
+        // http://localhost:8080/student/agebetween?a=18&b=24
+
+        ResponseEntity responseEntity = this.testRestTemplate.exchange(
+                "http://localhost:" + port + "/student/agebetween?a=18&b=24", HttpMethod.GET, null,
+                ArrayList.class);
+        System.out.println("responseEntity.getBody().getClass() = " + responseEntity.getBody().getClass());
+        ArrayList<LinkedHashMap> responseBodyArrayList = (ArrayList<LinkedHashMap>) responseEntity.getBody();
+        System.out.println("responseBodyArrayList = " + responseBodyArrayList);
+        assertThat(responseBodyArrayList.size()).isEqualTo(6);
+    }
 
 }
