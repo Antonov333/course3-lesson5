@@ -7,12 +7,8 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import pro.sky.course3lesson5scratch.controller.FacultyController;
-import pro.sky.course3lesson5scratch.exception.FacultyNotFoundException;
 import pro.sky.course3lesson5scratch.model.Faculty;
 
 import java.util.ArrayList;
@@ -21,7 +17,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest(
         classes = Course3Lesson5ScratchApplication.class,

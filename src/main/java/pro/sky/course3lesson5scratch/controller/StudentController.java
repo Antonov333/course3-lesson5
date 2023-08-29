@@ -43,22 +43,19 @@ public class StudentController {
 
     @DeleteMapping()
     public Student expel(@RequestBody Student student) {
-        System.out.println("expel by student: " + student);
         Student expelledStudent = students.sendDown(student);
         return expelledStudent;
     }
 
     @DeleteMapping("/{id}")
     public Student expel(@PathVariable("id") long id) {
-        System.out.println("expel by id: " + id);
         Student expelledStudent = students.sendDown(id);
         return expelledStudent;
     }
 
     @GetMapping("/age/{age}")
     public List<Student> selectByAge(@PathVariable int age) {
-        List<Student> selected = students.selectedByAge(age);
-        return selected;
+        return students.selectedByAge(age);
     }
 
     @GetMapping("/agebetween")

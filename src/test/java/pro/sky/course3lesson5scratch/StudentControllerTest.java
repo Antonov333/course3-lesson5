@@ -1,19 +1,21 @@
 package pro.sky.course3lesson5scratch;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.http.*;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import pro.sky.course3lesson5scratch.controller.StudentController;
 import pro.sky.course3lesson5scratch.exception.StudentNotFoundException;
 import pro.sky.course3lesson5scratch.model.Faculty;
 import pro.sky.course3lesson5scratch.model.Student;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -36,7 +38,7 @@ public class StudentControllerTest {
     @Test
     void viewStudentsTest() {
         assertThat(
-                        this.testRestTemplate.getForObject("http://localhost:" + port + "/student", Object.class))
+                this.testRestTemplate.getForObject("http://localhost:" + port + "/student", Object.class))
                 .isNotNull();
     }
 
@@ -72,7 +74,7 @@ public class StudentControllerTest {
     @Test
     void getStudentByIdTest() {
         assertThat(
-                        this.testRestTemplate.getForObject("http://localhost:" + port + "/student/2", Student.class))
+                this.testRestTemplate.getForObject("http://localhost:" + port + "/student/2", Student.class))
                 .isNotNull();
 
         Student expectedStudent = new Student();
@@ -81,7 +83,7 @@ public class StudentControllerTest {
         expectedStudent.setAge(32);
 
         assertThat(
-                        this.testRestTemplate.getForObject("http://localhost:" + port + "/student/2", Student.class))
+                this.testRestTemplate.getForObject("http://localhost:" + port + "/student/2", Student.class))
                 .isEqualTo(expectedStudent);
 
     }
