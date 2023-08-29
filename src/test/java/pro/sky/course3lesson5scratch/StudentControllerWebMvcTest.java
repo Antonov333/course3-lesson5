@@ -28,7 +28,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(StudentController.class)
 public class StudentControllerWebMvcTest {
 
-
     @Autowired
     private MockMvc mockMvc;
 
@@ -43,10 +42,6 @@ public class StudentControllerWebMvcTest {
 
     @InjectMocks
     private StudentController studentController;
-
-    @Test
-    void nothingTest() {
-    }
 
     @Test
     void getStudentTest() throws Exception {
