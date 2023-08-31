@@ -9,6 +9,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import pro.sky.course3lesson5scratch.controller.StudentController;
 import pro.sky.course3lesson5scratch.model.Student;
@@ -48,12 +49,28 @@ public class StudentControllerWebMvcTest {
         Student john25 = new Student(0, "John", 25);
         when(studentRepository.findById(1L)).thenReturn(Optional.of(john25));
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/student/1")
+        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/student/1")
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value(john25.getName()))
                 .andExpect(jsonPath("$.age").value(john25.getAge()));
+    }
+
+    @Test
+    void getStudentTest2() throws Exception {
+        Student john25 = new Student(0, "John", 25);
+        when(studentRepository.findById(1L)).thenReturn(Optional.of(john25));
+
+        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/student/1")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON));
+
+        resultActions.andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value(john25.getName()))
+                .andExpect(jsonPath("$.age").value(john25.getAge()));
+
+        System.out.println("resultActions.toString() = " + resultActions.toString());
     }
 
     private Student getJohn25() {
