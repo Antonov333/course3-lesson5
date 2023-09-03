@@ -71,16 +71,16 @@ public class StudentController {
 
     @GetMapping("/count")
     public Long countStudents() {
-        return -1L;
+        return students.countStudents();
     }
 
     @GetMapping("/average-age")
-    public Long getAverageAge() {
-        return -1L;
+    public Double getAverageAge() {
+        return students.getAverageAge();
     }
 
+    @GetMapping("/last-five")
     List<Student> getLastFive() {
-        return null;
+        return students.getLast5();
     }
-
 }

@@ -8,7 +8,6 @@ import pro.sky.course3lesson5scratch.model.Student;
 import pro.sky.course3lesson5scratch.service.FacultyService;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 
 @RestController
