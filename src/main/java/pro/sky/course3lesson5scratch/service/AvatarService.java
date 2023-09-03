@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import pro.sky.course3lesson5scratch.dto.AvatarDto;
 import pro.sky.course3lesson5scratch.exception.AvatarNotExistedException;
 import pro.sky.course3lesson5scratch.model.Avatar;
 import pro.sky.course3lesson5scratch.model.Student;
@@ -70,9 +71,10 @@ return ResponseEntity.status(HttpStatus.OK).headers(headers).body(avatar.getData
         return avatarRepository.findById(studentId).orElseThrow(AvatarNotExistedException::new);
     }
 
-    public List<Avatar> findAll(int id) {
-        PageRequest pageRequest = PageRequest.of(id, 2);
-        return avatarRepository.findAll(pageRequest).getContent();
+    public List<AvatarDto> findAll(int pageId) {
+        PageRequest pageRequest = PageRequest.of(pageId, 2);
+        List<Avatar> content = avatarRepository.findAll(pageRequest).getContent();
+        return content.stream().map(AvatarDto::fromEntity).toList();
     }
 
     private String getExtensions(String fileName) {

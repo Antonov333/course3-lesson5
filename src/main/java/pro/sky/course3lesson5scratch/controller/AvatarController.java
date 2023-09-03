@@ -6,6 +6,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import pro.sky.course3lesson5scratch.dto.AvatarDto;
 import pro.sky.course3lesson5scratch.model.Avatar;
 import pro.sky.course3lesson5scratch.service.AvatarService;
 
@@ -56,8 +57,8 @@ public class AvatarController {
         }
     }
 
-    @GetMapping(path = "/page/{id}")
-    public List<Avatar> getPage(@PathVariable int id) {
-        return avatarService.findAll(id);
+    @GetMapping(path = "/page/{pageId}")
+    public List<AvatarDto> getPage(@PathVariable int pageId) {
+        return avatarService.findAll(pageId);
     }
 }
