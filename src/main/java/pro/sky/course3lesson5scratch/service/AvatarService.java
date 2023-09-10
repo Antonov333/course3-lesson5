@@ -1,5 +1,7 @@
 package pro.sky.course3lesson5scratch.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,8 @@ import static java.nio.file.StandardOpenOption.CREATE_NEW;
 @Service
 public class AvatarService {
 
+    private final Logger logger = LoggerFactory.getLogger(AvatarService.class);
+
     private final AvatarRepository avatarRepository;
     private final StudentRepository studentRepository;
 
@@ -32,7 +36,12 @@ public class AvatarService {
         this.studentRepository = studentRepository;
     }
 
+    private void loggerInfoMethodInvoked(String methodName) {
+        logger.info(methodName + " method invoked");
+    }
+
     public void uploadAvatar(Long studentId, MultipartFile avatarFile) throws IOException {
+        loggerInfoMethodInvoked("uploadAvatar");
         Student student = studentRepository.getById(studentId);
         Path filePath = Path.of(avatarsDir, student.getId() + "." + getExtensions(avatarFile.getOriginalFilename()));
         Files.createDirectories(filePath.getParent());
@@ -54,24 +63,13 @@ public class AvatarService {
         avatarRepository.save(avatar);
     }
 
-    public void getAvatarPictureFromDataBase(long id) {
-        /*
-        * @GetMapping(value = "/{id}/avatar-from-db")
-public ResponseEntity‹byte[]› downloadAvatar(@PathVariable Long id) {
-Avatar avatar = avatarService.findAvatar(id);
-HttpHeaders headers = new HttpHeaders();
-headers.setContentType(MediaType.parseMediaType(avatar.getMediaType()));
-headers.setContentLength(avatar.getData().length);
-return ResponseEntity.status(HttpStatus.OK).headers(headers).body(avatar.getData());
-}
-        * */
-    }
-
     public Avatar findAvatar(Long studentId) {
+        loggerInfoMethodInvoked("findAvatar");
         return avatarRepository.findById(studentId).orElseThrow(AvatarNotExistedException::new);
     }
 
     public List<AvatarDto> findAll(int pageId) {
+        loggerInfoMethodInvoked("findAll");
         PageRequest pageRequest = PageRequest.of(pageId, 2);
         List<Avatar> content = avatarRepository.findAll(pageRequest).getContent();
         return content.stream().map(AvatarDto::fromEntity).toList();

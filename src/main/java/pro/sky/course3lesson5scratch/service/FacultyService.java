@@ -1,5 +1,7 @@
 package pro.sky.course3lesson5scratch.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 import pro.sky.course3lesson5scratch.exception.FacultyNotFoundException;
@@ -13,29 +15,40 @@ import java.util.List;
 @Service
 public class FacultyService {
 
+    private final Logger logger = LoggerFactory.getLogger(FacultyService.class);
+
     private final FacultyRepository facultyRepository;
 
     public FacultyService(FacultyRepository facultyRepository) {
         this.facultyRepository = facultyRepository;
     }
 
+    private void loggerInfoMethodInvoked(String methodName) {
+        logger.info(methodName + " method invoked");
+    }
+
     public List<Faculty> getFaculties() {
+        loggerInfoMethodInvoked("getFaculties");
         return facultyRepository.findAll();
     }
 
     public Faculty getById(long id) {
+        loggerInfoMethodInvoked("getById");
         return facultyRepository.findById(Long.valueOf(id)).orElseThrow(FacultyNotFoundException::new);
     }
 
     public List<Faculty> getFacultiesByColor(String color) {
+        loggerInfoMethodInvoked("getFacultiesByColor");
         return facultyRepository.findAllByColor(color);
     }
 
     public Faculty createFaculty(Faculty faculty) {
+        loggerInfoMethodInvoked("createFaculty");
         return facultyRepository.save(faculty);
     }
 
     public Faculty updateFaculty(long id, Faculty faculty) {
+        loggerInfoMethodInvoked("updateFaculty");
         Faculty existingFaculty = facultyRepository.findById(id).orElseThrow(FacultyNotFoundException::new);
         if (faculty.getName() != null) {
             existingFaculty.setName(faculty.getName());
@@ -47,30 +60,12 @@ public class FacultyService {
     }
 
     public List<Faculty> findByNameOrColorCaseTolerant(String search) {
+        loggerInfoMethodInvoked("findByNameOrColorCaseTolerant");
         return facultyRepository.findAllByNameIgnoreCaseOrColorIgnoreCase(search, search);
     }
 
-    public HashMap<Long, Faculty> loadExampleFaculties() {
-        final int one = 1, two = 2, three = 3, four = 4, five = 5, six = 6;
-        final String silver = "silver",
-                white = "white",
-                green = "green",
-                blue = "blue",
-                black = "black",
-                yellow = "yellow",
-                pink = "pink";
-
-        facultyRepository.save(new Faculty(Long.valueOf(one), "Commercial Cycling", silver));
-        facultyRepository.save(new Faculty(Long.valueOf(two), "Road Bicycle Racing", yellow));
-        facultyRepository.save(new Faculty(Long.valueOf(three), "Mountain Bike Racing", green));
-        facultyRepository.save(new Faculty(Long.valueOf(four), "Bikepacking", blue));
-
-        HashMap<Long, Faculty> facultyHashMap = new HashMap<>();
-        facultyRepository.findAll().stream().map(faculty -> facultyHashMap.put(Long.valueOf(faculty.getId()), faculty));
-        return facultyHashMap;
-    }
-
     public Faculty deleteFaculty(Long id) {
+        loggerInfoMethodInvoked("deleteFaculty(Long)");
         Faculty deletedFaculty =
                 facultyRepository.findById(id).orElseThrow(FacultyNotFoundException::new);
         facultyRepository.deleteById(id);
@@ -78,6 +73,7 @@ public class FacultyService {
     }
 
     public Faculty deleteFaculty(Faculty faculty) {
+        loggerInfoMethodInvoked("deleteFaculty(Faculty)");
         Example<Faculty> facultyExample = Example.of(faculty);
         Faculty deletedFaculty =
                 facultyRepository.findOne(facultyExample).orElseThrow(FacultyNotFoundException::new);
@@ -86,6 +82,7 @@ public class FacultyService {
     }
 
     public List<Student> getStudentList(long facultyId) {
+        loggerInfoMethodInvoked("getStudentList");
         Faculty faculty = facultyRepository.findById(facultyId).orElseThrow(FacultyNotFoundException::new);
         return faculty.getStudents();
     }
