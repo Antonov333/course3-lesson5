@@ -83,4 +83,9 @@ public class StudentController {
     List<Student> getLastFive() {
         return students.getLast5();
     }
+
+    @GetMapping("/get-all-on-a")
+    List<Student> getAllOnA() {
+        return students.getAllWithNamesOnA();
+    }
 }
