@@ -85,7 +85,7 @@ public class StudentController {
     }
 
     @GetMapping("/get-all-on-a")
-    List<Student> getAllOnA() {
+    List<String> getAllOnA() {
         return students.getAllWithNamesOnA();
     }
 }

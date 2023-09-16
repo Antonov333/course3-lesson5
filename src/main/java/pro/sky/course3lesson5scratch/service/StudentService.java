@@ -122,9 +122,9 @@ public class StudentService {
         return studentRepository.getLastFiveStudents();
     }
 
-    public List<Student> getAllWithNamesOnA() {
+    public List<String> getAllWithNamesOnA() {
         List<Student> list = studentRepository.findAll();
-        return studentRepository.getAllOnASorted();
+        return list.stream().map(Student::getName).filter(s -> s.startsWith("A")).toList();
     }
 
 }
