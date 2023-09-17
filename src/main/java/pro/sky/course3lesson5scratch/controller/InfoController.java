@@ -33,11 +33,21 @@ public class InfoController {
                 .iterate(1, a -> a + 1).parallel()
                 .limit(lim)
                 .reduce(0, Integer::sum);
+
         long timeConsumedParallel = System.currentTimeMillis() - startTime2;
+
+        startTime = System.currentTimeMillis();
+        int sumSimple = 0;
+        for (int i = 0; i <= lim; i++) {
+            sumSimple = sumSimple + i;
+        }
+        long timeConsumedSimple = System.currentTimeMillis() - startTime;
+
 
         return "lim: " + lim + ". Sum: " + sum +
                 ". Time consumed sequential: " + timeConsumedSequential + "ms. Time consumed parallel: " + timeConsumedParallel + "ms. Sum2: "
-                + sum2;
+                + sum2 + ". Time simplest: " + timeConsumedSimple +
+                "ms. sum simple: " + sumSimple;
     }
 
 }
