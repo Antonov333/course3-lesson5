@@ -79,6 +79,11 @@ public class StudentController {
         return students.getAverageAge();
     }
 
+    @GetMapping("/average-age-by-stream")
+    public Double getAverageAgeByStream() {
+        return students.getAverageAgeByStream();
+    }
+
     @GetMapping("/last-five")
     List<Student> getLastFive() {
         return students.getLast5();

@@ -117,6 +117,10 @@ public class StudentService {
         return studentRepository.getAverageAge();
     }
 
+    public Double getAverageAgeByStream() {
+        return studentRepository.findAll().stream().mapToInt(Student::getAge).average().orElse(-1);
+    }
+
     public List<Student> getLast5() {
         loggerInfoMethodInvoked("getLast5");
         return studentRepository.getLastFiveStudents();

@@ -9,6 +9,7 @@ import pro.sky.course3lesson5scratch.model.Faculty;
 import pro.sky.course3lesson5scratch.model.Student;
 import pro.sky.course3lesson5scratch.repository.FacultyRepository;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
@@ -85,6 +86,11 @@ public class FacultyService {
         loggerInfoMethodInvoked("getStudentList");
         Faculty faculty = facultyRepository.findById(facultyId).orElseThrow(FacultyNotFoundException::new);
         return faculty.getStudents();
+    }
+
+    public String getLongestNameByStream() {
+        return facultyRepository.findAll().stream()
+                .map(Faculty::getName).max(Comparator.comparingInt(String::length)).orElse("-");
     }
 
 }
