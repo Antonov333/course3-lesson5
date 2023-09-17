@@ -10,7 +10,6 @@ import pro.sky.course3lesson5scratch.model.Student;
 import pro.sky.course3lesson5scratch.repository.FacultyRepository;
 
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 
 @Service
