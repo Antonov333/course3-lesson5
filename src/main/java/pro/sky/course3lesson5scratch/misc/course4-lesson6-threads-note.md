@@ -5,3 +5,5 @@ Going to start Course 4 Lesson 5 homework on
 ## note
 
 Please refer Homework Spec and Lesson docs
+
+Pushing hard to complete homework ASAP
