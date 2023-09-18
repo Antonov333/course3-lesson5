@@ -94,8 +94,13 @@ public class StudentController {
         return students.getAllWithNamesOnA();
     }
 
-    @GetMapping("/threads")
+    @GetMapping("/print-six-names")
     void printSixNames() {
         students.printSixNamesInThreads();
+    }
+
+    @GetMapping("/print-six-names-sync")
+    void printSixNamesSync() {
+        students.printSixNamesInThreadsSync();
     }
 }

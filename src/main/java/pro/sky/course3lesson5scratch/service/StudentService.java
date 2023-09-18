@@ -133,7 +133,7 @@ public class StudentService {
     public void printSixNamesInThreads() {
         List<Student> studentList = studentRepository.findAll();
         System.out.println("Single stream");
-        studentList.stream().limit(5).forEach(System.out::println);
+        studentList.stream().limit(6).forEach(System.out::println);
 
         System.out.println("\nParallel threads");
         Thread parallelThread1 = new Thread(() -> {
@@ -152,6 +152,38 @@ public class StudentService {
         parallelThread1.start();
         parallelThread2.start();
 
+    }
+
+    private int sixNameIndex = 0;
+
+    public void printSixNamesInThreadsSync() {
+        List<Student> studentList = studentRepository.findAll();
+        System.out.println("Single stream");
+        studentList.stream().map(Student::getName).limit(6).forEach(System.out::println);
+
+        System.out.println("\nParallel threads");
+        Thread parallelThread1 = new Thread(() -> {
+            printNameSync(studentList);
+            printNameSync(studentList);
+        });
+
+        Thread parallelThread2 = new Thread(() -> {
+            printNameSync(studentList);
+            printNameSync(studentList);
+        });
+
+        printNameSync(studentList);
+        printNameSync(studentList);
+
+        parallelThread1.start();
+        parallelThread2.start();
+
+    }
+
+    private synchronized void printNameSync(List<Student> list) {
+        System.out.println(list.get(sixNameIndex).getName());
+        sixNameIndex++;
+        sixNameIndex = sixNameIndex % 6;
     }
 
 }
