@@ -93,4 +93,9 @@ public class StudentController {
     List<String> getAllOnA() {
         return students.getAllWithNamesOnA();
     }
+
+    @GetMapping("/threads")
+    void printSixNames() {
+        students.printSixNamesInThreads();
+    }
 }

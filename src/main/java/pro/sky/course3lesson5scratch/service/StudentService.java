@@ -130,4 +130,28 @@ public class StudentService {
         return list.stream().map(Student::getName).filter(s -> s.startsWith("A")).toList();
     }
 
+    public void printSixNamesInThreads() {
+        List<Student> studentList = studentRepository.findAll();
+        System.out.println("Single stream");
+        studentList.stream().limit(5).forEach(System.out::println);
+
+        System.out.println("\nParallel threads");
+        Thread parallelThread1 = new Thread(() -> {
+            System.out.println(studentList.get(2) + " T1");
+            System.out.println(studentList.get(3) + " T1");
+        });
+
+        Thread parallelThread2 = new Thread(() -> {
+            System.out.println(studentList.get(4) + " T2");
+            System.out.println(studentList.get(5) + " T2");
+        });
+
+        System.out.println(studentList.get(0) + " Main");
+        System.out.println(studentList.get(1) + " Main");
+
+        parallelThread1.start();
+        parallelThread2.start();
+
+    }
+
 }
